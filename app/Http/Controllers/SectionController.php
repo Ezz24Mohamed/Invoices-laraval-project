@@ -39,8 +39,8 @@ class SectionController extends Controller
        $validate=$request->validate([
            'section_name'=>'required|unique:sections|max:255'
        ],[
-           'section.required'=>'يرجي ادخال القسم',
-               'section.unique'=>'هذا القسم موجود مسبقا'
+           'section_name.required'=>'يرجي ادخال القسم',
+               'section_name.unique'=>'هذا القسم موجود مسبقا'
            ]
        );
        Section::create([
