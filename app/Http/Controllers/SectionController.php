@@ -15,7 +15,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return view('sections.section');
+        $sections = Section::all();
+        return view('sections.section', compact('sections'));
     }
 
     /**
@@ -36,20 +37,20 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-       $validate=$request->validate([
-           'section_name'=>'required|unique:sections|max:255'
-       ],[
-           'section_name.required'=>'يرجي ادخال القسم',
-               'section_name.unique'=>'هذا القسم موجود مسبقا'
-           ]
-       );
-       Section::create([
-           'section_name'=>$request->section_name,
-           'description'=>$request->description,
-           'created_by'=>Auth::user()->name,
-       ]);
-       session()->flash('Add','تم الاضافة بنجاح');
-       return redirect('/sections');
+        $validate = $request->validate([
+            'section_name' => 'required|unique:sections|max:255'
+        ], [
+                'section_name.required' => 'يرجي ادخال القسم',
+                'section_name.unique' => 'هذا القسم موجود مسبقا'
+            ]
+        );
+        Section::create([
+            'section_name' => $request->section_name,
+            'description' => $request->description,
+            'created_by' => Auth::user()->name,
+        ]);
+        session()->flash('Add', 'تم الاضافة بنجاح');
+        return redirect('/sections');
     }
 
     /**
@@ -81,9 +82,27 @@ class SectionController extends Controller
      * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request)
     {
-        //
+        echo 'update';
+        $id = $request->id;
+        $validate = $request->validate([
+            'section_name' => 'required|unique:sections,section_name,' . $id,
+        ],
+            [
+                'section_name.unique' => 'هذا الاسم موجود مسبقا',
+                'section_name.required' => 'يرجي ادخال القسم',
+
+            ]
+        );
+        $section = Section::find($id);
+        $section->update([
+            'section_name' => $request->section_name,
+            'description' => $request->description,
+        ]);
+
+        session()->flash('update', 'تم تحديث القسم بنجاح');
+        return redirect('/sections');
     }
 
     /**
@@ -92,8 +111,11 @@ class SectionController extends Controller
      * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        Section::find($id)->delete();
+        session()->flash('delete', 'تم حذف القسم بنجاح');
+        return redirect ('/sections');
     }
 }
