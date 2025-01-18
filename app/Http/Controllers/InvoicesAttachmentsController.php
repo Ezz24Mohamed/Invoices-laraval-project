@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoices_atttachment;
+use App\Models\invoices_attachments;
 use Illuminate\Http\Request;
 
-class InvoicesAtttachmentController extends Controller
+class InvoicesAttachmentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class InvoicesAtttachmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Invoices_atttachment  $invoices_atttachment
+     * @param  \App\Models\invoices_attachments  $invoices_attachments
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoices_atttachment $invoices_atttachment)
+    public function show(invoices_attachments $invoices_attachments)
     {
         //
     }
@@ -52,10 +52,10 @@ class InvoicesAtttachmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Invoices_atttachment  $invoices_atttachment
+     * @param  \App\Models\invoices_attachments  $invoices_attachments
      * @return \Illuminate\Http\Response
      */
-    public function edit(Invoices_atttachment $invoices_atttachment)
+    public function edit(invoices_attachments $invoices_attachments)
     {
         //
     }
@@ -64,10 +64,10 @@ class InvoicesAtttachmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Invoices_atttachment  $invoices_atttachment
+     * @param  \App\Models\invoices_attachments  $invoices_attachments
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoices_atttachment $invoices_atttachment)
+    public function update(Request $request, invoices_attachments $invoices_attachments)
     {
         //
     }
@@ -75,10 +75,10 @@ class InvoicesAtttachmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Invoices_atttachment  $invoices_atttachment
+     * @param  \App\Models\invoices_attachments  $invoices_attachments
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Invoices_atttachment $invoices_atttachment)
+    public function destroy(invoices_attachments $invoices_attachments)
     {
         //
     }

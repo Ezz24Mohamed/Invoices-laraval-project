@@ -1,4 +1,4 @@
-secsq<?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sections', function (Blueprint $table) {
-            $table->id();
-            $table->string('section_name');
-            $table->string('description')->nullable();
-            $table->string('created_by');
+            $table->bigIncrements('id');//altered;
+            $table->string('section_name',900);
+            $table->text('description')->nullable();
+            $table->string('created_by',900);
             $table->timestamps();
         });
     }

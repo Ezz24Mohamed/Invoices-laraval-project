@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoices_atttachments', function (Blueprint $table) {
+        Schema::create('invoices_attachments', function (Blueprint $table) {
             $table->id();
-            $table ->string('file_name',800);
-            $table->string('invoice_num');
-            $table->string('user',800);
-            $table->unsignedBigInteger('inv_id')->nullable();
-            $table->foreign('inv_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->string('file_name',999);
+            $table->string('invoices_number',300);
+            $table->string('user',300);
+            $table->unsignedBigInteger('id_invoices');
+            $table->foreign('id_invoices')->references('id')->on('invoices')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoices_atttachments');
+        Schema::dropIfExists('invoices_attachments');
     }
 };

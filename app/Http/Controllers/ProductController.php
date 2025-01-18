@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Products;
-use App\Models\Section;
-use Illuminate\Contracts\Validation\Validator;
+use App\Models\product;
+use App\Models\products;
+use App\Models\sections;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $sections = Section::all();
-        $products = Products::all();
-        return view('products.product', compact('sections', 'products'));
+        $sections = sections::all();
+        $products = products::all();
+
+        return view('products.products', compact('sections', 'products'));
     }
 
     /**
@@ -39,32 +41,39 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate(
+
+        $this->validate(
+            $request,
             [
-                'product_name' => 'required|max:255',
-                'section_id' => 'required'
+                'product_name' => 'unique:products|max:255|required',
+                'section_id' => 'required',
+
             ],
             [
-                'product_name.required' => 'يرجي ادخال المنتج',
-                'section_id.required' => 'يرجي ادخال القسم',
+                'product_name.unique' => 'هذا المنتج موجود بالفعل',
+                'product_name.required' => 'يرجي ادخال اسم المنتج',
+                'section_id.required' => 'يرجي ادخال اسم القسم',
             ]
         );
-        Products::create([
+
+        products::create([
             'product_name' => $request->product_name,
-            'section_id' => $request->section_id,
             'description' => $request->description,
+            'section_id' => $request->section_id,
+            'created_by' => Auth::user()->name,
         ]);
-        session()->flash('Add', 'تم اضافة المنتج بنجاح');
+        session()->flash('Add', 'تم الاضافة بنجاح');
         return redirect('/products');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Products  $products
+     * @param  \App\Models\product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Products $products)
+    public function show(product $product)
     {
         //
     }
@@ -72,10 +81,10 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Products  $products
+     * @param  \App\Models\product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Products $products)
+    public function edit(product $product)
     {
         //
     }
@@ -84,44 +93,44 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Products  $products
+     * @param  \App\Models\product  $product
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
-        /*first()=> return the first row in the section table which matches the query*/
-        $sec_id = Section::where('section_name', $request->section_name)->first()->id;
-        $pro_id = $request->product_id;
-        $validate = $request->validate(
+        $section_id = sections::where('section_name', '=', $request->section_name)->first()->id;
+        $products = products::findOrFail($request->pro_id);
+        $this->validate(
+            $request,
             [
                 'product_name' => 'required',
-            ]
-            ,
+            ],
             [
                 'product_name.required' => 'يرجي ادخال اسم المنتج',
             ]
         );
-        $products = Products::findOrFail($pro_id);
+
         $products->update([
             'product_name' => $request->product_name,
+            'section_id' => $section_id,
             'description' => $request->description,
-            'section_id' => $sec_id,
         ]);
-        session()->flash('update', 'تم تعديل المنتج بنجاح');
-        return back();
+        session()->flash('edit', 'تم التعديل بنجاح');
+        return redirect('/products');
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Products  $products
+     * @param  \App\Models\product  $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        $pro_id=$request->product_id;
-        Products::find($pro_id)->delete();
-        session()->flash('delete','تم حذف المنتج بنجاح');
-        return back();
+        $product = products::findOrFail($request->pro_id);
+        $product->delete();
+        session()->flash('delete', 'تم الحذف بنجاح');
+        return redirect('/products');
     }
 }

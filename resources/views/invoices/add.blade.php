@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ URL::asset('assets/plugins/telephoneinput/telephoneinput-rtl.css') }}">
 @endsection
 @section('title')
-اضافة فاتورة
+    اضافة فاتورة
 @stop
 
 @section('page-header')
@@ -28,6 +28,19 @@
     <!-- breadcrumb -->
 @endsection
 @section('content')
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
+
 
     @if (session()->has('Add'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -46,14 +59,13 @@
                 <div class="card-body">
                     <form action="{{ route('invoices.store') }}" method="post" enctype="multipart/form-data"
                         autocomplete="off">
-                        {{ csrf_field() }}
+                        @csrf
                         {{-- 1 --}}
 
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="control-label">رقم الفاتورة</label>
-                                <input type="text" class="form-control" id="inputName" name="invoice_number"
-                                    title="يرجي ادخال رقم الفاتورة" required>
+                                <input type="text" class="form-control" id="inputName" name="invoice_number">
                             </div>
 
                             <div class="col">
@@ -93,7 +105,8 @@
                             <div class="col">
                                 <label for="inputName" class="control-label">مبلغ التحصيل</label>
                                 <input type="text" class="form-control" id="inputName" name="Amount_collection"
-                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                    required>
                             </div>
                         </div>
 
@@ -156,8 +169,8 @@
                         <h5 class="card-title">المرفقات</h5>
 
                         <div class="col-sm-12 col-md-12">
-                            <input type="file" name="pic" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                data-height="70" />
+                            <input type="file" name="pic" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
                         </div><br>
 
                         <div class="d-flex justify-content-center">
@@ -209,7 +222,6 @@
         var date = $('.fc-datepicker').datepicker({
             dateFormat: 'yy-mm-dd'
         }).val();
-
     </script>
 
     <script>
@@ -236,7 +248,6 @@
             });
 
         });
-
     </script>
 
 
@@ -249,9 +260,9 @@
             var Value_VAT = parseFloat(document.getElementById("Value_VAT").value);
 
             var Amount_Commission2 = Amount_Commission - Discount;
-
-
-            if (typeof Amount_Commission === 'undefined' || !Amount_Commission) {
+            if (Amount_Commission2 < 0) {
+                alert('Invalid negative comissions');
+            } else if (typeof Amount_Commission === 'undefined' || !Amount_Commission) {
 
                 alert('يرجي ادخال مبلغ العمولة ');
 
@@ -271,7 +282,6 @@
             }
 
         }
-
     </script>
 
 
