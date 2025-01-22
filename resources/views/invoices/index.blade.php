@@ -56,6 +56,7 @@
                                     <th class="border-bottom-0">الاجمالي</th>
                                     <th class="border-bottom-0">الحالة</th>
                                     <th class="border-bottom-0">الملاحظات</th>
+                                    <th class="border-bottome-0">العمليات </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,9 +68,8 @@
                                         <td>{{ $invoice->invoices_number }}</td>
                                         <td>{{ $invoice->invoices_date }}</td>
                                         <td>{{ $invoice->due_date }}</td>
-                                        <td><a 
-                                            href="{{url('InvoicesDetails')}}/{{$invoice->id}}"
-                                            >{{$invoice->section->section_name}}</a>
+                                        <td><a
+                                                href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
                                         </td>
                                         <td>{{ $invoice->product }}</td>
                                         <td>{{ $invoice->discount }}</td>
@@ -82,12 +82,28 @@
                                             @elseif ($invoice->status_value == 2)
                                                 <span class="text-danger">{{ $invoice->status }}</span>
                                             @else
-                                                <span class="text-warning">{{$invoice->status}}</span>
+                                                <span class="text-warning">{{ $invoice->status }}</span>
                                             @endif
 
 
                                         </td>
                                         <td>{{ $invoice->note }}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button aria-expanded="false" aria-haspopup="true"
+                                                    class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
+                                                    type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
+                                                <div class="dropdown-menu tx-13">
+
+                                                    <a class="dropdown-item"
+                                                        href=" {{ url('edit_invoices') }}/{{ $invoice->id }}">تعديل
+                                                        الفاتورة</a>
+
+
+
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

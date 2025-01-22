@@ -34,7 +34,14 @@
         </div>
     @endif
 
-
+    @if (session()->has('Add'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session()->get('Add') }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     @if (session()->has('delete'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>{{ session()->get('delete') }}</strong>
@@ -144,6 +151,7 @@
                                                             <th>تاريخ الدفع </th>
                                                             <th>ملاحظات</th>
                                                             <th>تاريخ الاضافة </th>
+                                                            <th>تاريخ التعديل</th>
                                                             <th>المستخدم</th>
                                                         </tr>
                                                     </thead>
@@ -153,8 +161,8 @@
                                                             <?php $i++; ?>
                                                             <tr>
                                                                 <td>{{ $i }}</td>
-                                                                <td>{{ $x->invoices_number }}</td>
-                                                                <td>{{ $x->product }}</td>
+                                                                <td>{{ $invoices->invoices_number }}</td>
+                                                                <td>{{ $invoices->product }}</td>
                                                                 <td>{{ $invoices->section->section_name }}</td>
                                                                 @if ($x->status_value == 1)
                                                                     <td><span
@@ -170,8 +178,9 @@
                                                                     </td>
                                                                 @endif
                                                                 <td>{{ $x->payment_date }}</td>
-                                                                <td>{{ $x->note }}</td>
-                                                                <td>{{ $x->created_at }}</td>
+                                                                <td>{{ $invoices->note }}</td>
+                                                                <td>{{ $invoices->created_at }}</td>
+                                                                <td>{{ $invoices->updated_at }}</td>
                                                                 <td>{{ $x->user }}</td>
                                                             </tr>
                                                         @endforeach
@@ -184,28 +193,29 @@
                                         <div class="tab-pane" id="tab6">
                                             <!--المرفقات-->
                                             <div class="card card-statistics">
-                                                @can('اضافة مرفق')
-                                                    <div class="card-body">
-                                                        <p class="text-danger">* صيغة المرفق pdf, jpeg ,.jpg , png </p>
-                                                        <h5 class="card-title">اضافة مرفقات</h5>
-                                                        <form method="post" action="{{ url('/InvoiceAttachments') }}"
-                                                            enctype="multipart/form-data">
-                                                            {{ csrf_field() }}
-                                                            <div class="custom-file">
-                                                                <input type="file" class="custom-file-input" id="customFile"
-                                                                    name="file_name" required>
-                                                                <input type="hidden" id="customFile" name="invoice_number"
-                                                                    value="{{ $invoices->invoice_number }}">
-                                                                <input type="hidden" id="invoice_id" name="invoice_id"
-                                                                    value="{{ $invoices->id }}">
-                                                                <label class="custom-file-label" for="customFile">حدد
-                                                                    المرفق</label>
-                                                            </div><br><br>
-                                                            <button type="submit" class="btn btn-primary btn-sm "
-                                                                name="uploadedFile">تاكيد</button>
-                                                        </form>
-                                                    </div>
-                                                @endcan
+
+                                                <div class="card-body">
+                                                    <p class="text-danger">* صيغة المرفق pdf, jpeg ,.jpg , png </p>
+                                                    <h5 class="card-title">اضافة مرفقات</h5>
+                                                    <form method="post" action="{{ route('InvoicesAttachments.store') }}"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" id="customFile"
+                                                                name="file_name" required>
+                                                            <input type="hidden" id="invoices_number"
+                                                                name="invoices_number"
+                                                                value="{{ $invoices->invoices_number }}">
+                                                            <input type="hidden" id="invoices_id" name="invoices_id"
+                                                                value="{{ $invoices->id }}">
+                                                            <label class="custom-file-label" for="customFile">حدد
+                                                                المرفق</label>
+                                                        </div><br><br>
+                                                        <button type="submit" class="btn btn-primary btn-sm "
+                                                            name="uploadedFile">تاكيد</button>
+                                                    </form>
+                                                </div>
+
                                                 <br>
 
                                                 <div class="table-responsive mt-15">
@@ -350,5 +360,12 @@
             modal.find('.modal-body #file_name').val(file_name);
             modal.find('.modal-body #invoices_number').val(invoices_number);
         })
+    </script>
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     </script>
 @endsection
