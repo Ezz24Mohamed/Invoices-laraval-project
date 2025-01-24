@@ -184,9 +184,22 @@ class InvoicesController extends Controller
      * @param  \App\Models\invoices  $invoices
      * @return \Illuminate\Http\Response
      */
-    public function destroy(invoices $invoices)
+    public function destroy(Request $request)
     {
-        //
+
+
+        $invoice_id = $request->invoices_id;
+        $invoices = invoices::where('id', '=', $invoice_id)->first();
+        $atttachments = invoices_attachments::where('id_invoices', '=', $invoice_id)->get();
+        foreach ($atttachments as $at) {
+            if (Storage::disk('public_uploads')->exists($at->invoices_number)) {
+                Storage::disk('public_uploads')->deleteDirectory($at->invoices_number);
+            }
+        }
+        $invoices->forceDelete();
+        session()->flash('delete');
+        return back();
+
     }
     public function getProducts($id)
     {

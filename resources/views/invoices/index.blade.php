@@ -7,6 +7,11 @@
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <!--Internal   Notify -->
+    <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+@endsection
+@section('title')
+    قائمة الفواتير
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -19,6 +24,16 @@
         </div>
     @endsection
     @section('content')
+        @if (session()->has('delete'))
+            <script>
+                window.onload = function() {
+                    notif({
+                        msg: "تم حذف الفاتورة بنجاح",
+                        type: 'error',
+                    })
+                }
+            </script>
+        @endif
         <!-- row -->
         <div class="row">
 
@@ -99,6 +114,12 @@
                                                         href=" {{ url('edit_invoices') }}/{{ $invoice->id }}">تعديل
                                                         الفاتورة</a>
 
+                                                    <a class="dropdown-item" href="#"
+                                                        data-invoices_id="{{ $invoice->id }}" data-toggle="modal"
+                                                        data-target="#delete_invoice"><i
+                                                            class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
+                                                        الفاتورة</a>
+
 
 
                                                 </div>
@@ -113,6 +134,32 @@
             </div>
         </div>
         <!--/div-->
+        <!-- حذف الفاتورة -->
+        <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">حذف الفاتورة</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <form action="{{ route('invoices.destroy', 'id') }}" method="post">
+                            @method('delete')
+                            @csrf
+                    </div>
+                    <div class="modal-body">
+                        هل انت متاكد من عملية الحذف ؟
+                        <input type="hidden" name="invoices_id" id="invoices_id" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                        <button type="submit" class="btn btn-danger">تاكيد</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </div>
     <!-- /row -->
@@ -139,6 +186,17 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <!--Internal  Notify js -->
+    <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
+    <script>
+        $('#delete_invoice').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var invoices_id = button.data('invoices_id')
+            var modal = $(this)
+            modal.find('.modal-body #invoices_id').val(invoices_id);
+        })
+    </script>
     <!--Internal  Notify js -->
     <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
