@@ -111,7 +111,9 @@
                                                 <div class="dropdown-menu tx-13">
 
                                                     <a class="dropdown-item"
-                                                        href=" {{ url('edit_invoices') }}/{{ $invoice->id }}">تعديل
+                                                        href=" {{ url('edit_invoices') }}/{{ $invoice->id }}">
+                                                        <i class="text-success fas fa-edit"></i>&nbsp;&nbsp;
+                                                        تعديل
                                                         الفاتورة</a>
 
                                                     <a class="dropdown-item" href="#"
@@ -119,6 +121,12 @@
                                                         data-target="#delete_invoice"><i
                                                             class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
                                                         الفاتورة</a>
+
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('invoices.show', $invoice->id) }}"><i
+                                                            class=" text-success fas fa-edit"></i>&nbsp;&nbsp;
+                                                        تغيير حالة الدفع
+                                                    </a>
 
 
 
@@ -135,12 +143,14 @@
         </div>
         <!--/div-->
         <!-- حذف الفاتورة -->
-        <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal
+                                                            fade" id="delete_invoice"
+            tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">حذف الفاتورة</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">حذف
+                            الفاتورة</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

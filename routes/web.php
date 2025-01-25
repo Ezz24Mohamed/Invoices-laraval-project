@@ -34,6 +34,7 @@ Route::get('download/{invoices_number}/{file_name}', [InvoicesDetailsController:
 Route::post('delete_file', [InvoicesDetailsController::class, 'destroy'])->name('delete_file');
 Route::resource('InvoicesAttachments', InvoicesAttachmentsController::class);
 Route::get('edit_invoices/{invoices_id}', [InvoicesController::class, 'edit']);
+Route::post('/update_status/{id}', [InvoicesController::class, 'updateStatus'])->name('update_status');
 Route::resource('sections', SectionsController::class);
 Route::resource('products', ProductController::class);
 

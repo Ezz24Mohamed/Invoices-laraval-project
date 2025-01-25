@@ -102,9 +102,10 @@ class InvoicesController extends Controller
      * @param  \App\Models\invoices  $invoices
      * @return \Illuminate\Http\Response
      */
-    public function show(invoices $invoices)
+    public function show($id)
     {
-        echo 'show';
+        $invoices = invoices::where('id', '=', $id)->first();
+        return view('invoices.status_update', compact('invoices'));
 
     }
 
@@ -205,6 +206,69 @@ class InvoicesController extends Controller
     {
         $products = DB::table('products')->where('section_id', '=', $id)->pluck('product_name', 'id');
         return json_encode($products);
+    }
+    public function updateStatus($id, Request $request)
+    {
+        $invoice_id = $id;
+        $invoices = invoices::where('id', '=', $invoice_id)->first();
+        $this->validate(
+            $request,
+            [
+                'Status' => 'required',
+                'Payment_Date' => 'required',
+            ],
+            [
+                'Status.required' => 'برجاء تحديد حالة الدفع',
+                'Payment_Date.required' => 'برجاء ادخال تاريخ الدفع',
+            ],
+        );
+        if ($request->Status == 'مدفوعة') {
+            $invoices->update([
+                'status_value' => 1,
+                'status' => $request->Status,
+                'payment_date' => $request->Payment_Date,
+            ]);
+
+            invoices_details::create([
+                'id_invoices' => $invoice_id,
+                'invoices_number' => $invoices->invoices_number,
+                'product' => $invoices->product,
+                'section' => $invoices->Section,
+                'status' => $invoices->status,
+                'status_value' => $invoices->status_value,
+                'user' => Auth::user()->name,
+                'note' => $invoices->note,
+                'payment_date' => $invoices->payment_date,
+
+            ]);
+
+
+        } else {
+            $invoices->update([
+                'status_value' => 3,
+                'status' => $request->Status,
+                'payment_date' => $request->Payment_Date,
+            ]);
+            invoices_details::create([
+                'id_invoices' => $invoice_id,
+                'invoices_number' => $invoices->invoices_number,
+                'product' => $invoices->product,
+                'section' => $invoices->Section,
+                'status' => $invoices->status,
+                'status_value' => $invoices->status_value,
+                'user' => Auth::user()->name,
+                'note' => $invoices->note,
+                'payment_date' => $invoices->payment_date,
+
+            ]);
+
+
+        }
+        session()->flash('edit_status');
+        return back();
+
+
+
     }
 
 
