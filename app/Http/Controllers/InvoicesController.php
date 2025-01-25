@@ -192,14 +192,29 @@ class InvoicesController extends Controller
         $invoice_id = $request->invoices_id;
         $invoices = invoices::where('id', '=', $invoice_id)->first();
         $atttachments = invoices_attachments::where('id_invoices', '=', $invoice_id)->get();
-        foreach ($atttachments as $at) {
-            if (Storage::disk('public_uploads')->exists($at->invoices_number)) {
-                Storage::disk('public_uploads')->deleteDirectory($at->invoices_number);
+        $idPage = $request->id_page;
+
+        if (!$idPage == 2) {
+            foreach ($atttachments as $at) {
+                if (Storage::disk('public_uploads')->exists($at->invoices_number)) {
+                    Storage::disk('public_uploads')->deleteDirectory($at->invoices_number);
+                
+                }
             }
+            $invoices->forceDelete();
+            session()->flash('delete');
+            return back();
+
+
+        } else {
+
+            $invoices->delete();
+            session()->flash('archive');
+            return redirect('/archived_invoices');
+
         }
-        $invoices->forceDelete();
-        session()->flash('delete');
-        return back();
+
+
 
     }
     public function getProducts($id)
@@ -280,9 +295,10 @@ class InvoicesController extends Controller
         $invoices = invoices::where('status_value', '=', 2)->get();
         return view('invoices.unpaid_invoices', compact('invoices'));
     }
-    public function parialPaid(){
-        $invoices=invoices::where('status_value','=',3)->get();
-        return view('invoices.partial_invoices',compact('invoices'));
+    public function parialPaid()
+    {
+        $invoices = invoices::where('status_value', '=', 3)->get();
+        return view('invoices.partial_invoices', compact('invoices'));
     }
 
 

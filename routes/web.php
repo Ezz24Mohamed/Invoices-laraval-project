@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchivedInvoicesController;
 use App\Http\Controllers\InvoicesAttachmentsController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\InvoicesDetailsController;
@@ -40,5 +41,6 @@ Route::resource('products', ProductController::class);
 Route::get('paid_invoices', [InvoicesController::class, 'paidInvoices']);
 Route::get('unpaid_invoices', [InvoicesController::class, 'unPaidInvoices']);
 Route::get('partial_invoices', [InvoicesController::class, 'parialPaid']);
-Route::get('/{page}', [\App\Http\Controllers\AdminController::class, 'index']);
+Route::resource('archived_invoices', ArchivedInvoicesController::class);
+Route::get('/{page}', action: [\App\Http\Controllers\AdminController::class, 'index']);
 

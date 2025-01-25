@@ -54,6 +54,8 @@
                             المدفوعة</a></li>
                     <li><a class="slide-item" href="{{ url('partial_invoices') }}">الفواتير المدفوعة
                             جزئيا</a></li>
+                    <li><a class="slide-item" href="{{ url('archived_invoices') }}">الارشيف
+                        </a></li>
 
 
                 </ul>

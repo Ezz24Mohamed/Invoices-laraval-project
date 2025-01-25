@@ -11,7 +11,7 @@
     <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
 @endsection
 @section('title')
-    قائمة الفواتير
+    قائمة ارشيف الفواتير
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -19,27 +19,28 @@
         <div class="my-auto">
             <div class="d-flex">
                 <h4 class="content-title mb-0 my-auto">الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة
-                    الفواتير</span>
+                    ارشيف الفواتير </span>
             </div>
         </div>
     @endsection
     @section('content')
-        @if (session()->has('delete'))
+        @if (session()->has('archive'))
+            <script>
+                window.onload = function() {
+                    notif({
+                        msg: "تم ارشفة الفاتورة بنجاح",
+                        type: 'success',
+                    })
+                }
+            </script>
+        @endif
+
+        @if (session()->has('delete_archived'))
             <script>
                 window.onload = function() {
                     notif({
                         msg: "تم حذف الفاتورة بنجاح",
                         type: 'error',
-                    })
-                }
-            </script>
-        @endif
-        @if (session()->has('restore_invoices'))
-            <script>
-                window.onload = function() {
-                    notif({
-                        msg: "تم الغاء ارشفة الفاتورة بنجاح",
-                        type: 'success',
                     })
                 }
             </script>
@@ -120,12 +121,12 @@
                                                     class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                                     type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                                 <div class="dropdown-menu tx-13">
+                                                    <a class="dropdown-item" href="#"
+                                                        data-invoices_id="{{ $invoice->id }}" data-toggle="modal"
+                                                        data-target="#Transfer_invoice"><i
+                                                            class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
+                                                        الفواتير</a>
 
-                                                    <a class="dropdown-item"
-                                                        href=" {{ url('edit_invoices') }}/{{ $invoice->id }}">
-                                                        <i class="text-success fas fa-edit"></i>&nbsp;&nbsp;
-                                                        تعديل
-                                                        الفاتورة</a>
 
                                                     <a class="dropdown-item" href="#"
                                                         data-invoices_id="{{ $invoice->id }}" data-toggle="modal"
@@ -133,18 +134,9 @@
                                                             class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
                                                         الفاتورة</a>
 
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('invoices.show', $invoice->id) }}"><i
-                                                            class=" text-success fas fa-edit"></i>&nbsp;&nbsp;
-                                                        تغيير حالة الدفع
-                                                    </a>
 
-                                                    <a class="dropdown-item" href="#"
-                                                        data-invoices_id="{{ $invoice->id }}" data-toggle="modal"
-                                                        data-target="#Transfer_invoice"><i
-                                                            class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
-                                                        الارشيف
-                                                    </a>
+
+
 
                                                 </div>
                                             </div>
@@ -159,9 +151,8 @@
         </div>
         <!--/div-->
         <!-- حذف الفاتورة -->
-        <div class="modal
-                                                            fade" id="delete_invoice"
-            tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -170,7 +161,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <form action="{{ route('invoices.destroy', 'id') }}" method="post">
+                        <form action="{{ route('archived_invoices.destroy', 'test') }}" method="post">
                             @method('delete')
                             @csrf
                     </div>
@@ -186,24 +177,23 @@
                 </div>
             </div>
         </div>
-        <!-- ارشيف الفاتورة -->
+        <!--الغاء الارشفة-->
         <div class="modal fade" id="Transfer_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">ارشفة الفاتورة</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">الغاء ارشفة الفاتورة</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <form action="{{ route('invoices.destroy', 'test') }}" method="post">
-                            @method('delete')
+                        <form action="{{ route('archived_invoices.update', 'test') }}" method="post">
+                            @method('PUT');
                             @csrf
                     </div>
                     <div class="modal-body">
-                        هل انت متاكد من عملية الارشفة ؟
+                        هل انت متاكد من عملية الغاء الارشفة ؟
                         <input type="hidden" name="invoices_id" id="invoices_id" value="">
-                        <input type="hidden" name="id_page" id="id_page" value="2">
 
                     </div>
                     <div class="modal-footer">
@@ -214,6 +204,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
     <!-- /row -->
@@ -259,8 +250,6 @@
             modal.find('.modal-body #invoices_id').val(invoices_id);
         })
     </script>
-
-
 
     <!--Internal  Notify js -->
     <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
