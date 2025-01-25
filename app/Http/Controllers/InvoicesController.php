@@ -270,6 +270,20 @@ class InvoicesController extends Controller
 
 
     }
+    public function paidInvoices()
+    {
+        $invoices = invoices::where('status_value', '=', 1)->get();
+        return view('invoices.paid_invoices', compact('invoices'));
+    }
+    public function unPaidInvoices()
+    {
+        $invoices = invoices::where('status_value', '=', 2)->get();
+        return view('invoices.unpaid_invoices', compact('invoices'));
+    }
+    public function parialPaid(){
+        $invoices=invoices::where('status_value','=',3)->get();
+        return view('invoices.partial_invoices',compact('invoices'));
+    }
 
 
 

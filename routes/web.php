@@ -37,8 +37,8 @@ Route::get('edit_invoices/{invoices_id}', [InvoicesController::class, 'edit']);
 Route::post('/update_status/{id}', [InvoicesController::class, 'updateStatus'])->name('update_status');
 Route::resource('sections', SectionsController::class);
 Route::resource('products', ProductController::class);
-
-
-
+Route::get('paid_invoices', [InvoicesController::class, 'paidInvoices']);
+Route::get('unpaid_invoices', [InvoicesController::class, 'unPaidInvoices']);
+Route::get('partial_invoices', [InvoicesController::class, 'parialPaid']);
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class, 'index']);
 

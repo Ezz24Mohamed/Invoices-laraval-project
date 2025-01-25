@@ -49,10 +49,10 @@
                     </svg><span class="side-menu__label">الفواتير</span><i class="angle fe fe-chevron-down"></i></a>
                 <ul class="slide-menu">
                     <li><a class="slide-item" href="{{ url('/' . ($page = 'invoices')) }}">قائمة الفواتير</a></li>
-                    <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-flot')) }}">الفواتير المدفوعة</a></li>
-                    <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-chartjs')) }}">الفواتير غير
+                    <li><a class="slide-item" href="{{ url('paid_invoices') }}">الفواتير المدفوعة</a></li>
+                    <li><a class="slide-item" href="{{ url('unpaid_invoices') }}">الفواتير غير
                             المدفوعة</a></li>
-                    <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-echart')) }}">الفواتير المدفوعة
+                    <li><a class="slide-item" href="{{ url('partial_invoices') }}">الفواتير المدفوعة
                             جزئيا</a></li>
 
 
