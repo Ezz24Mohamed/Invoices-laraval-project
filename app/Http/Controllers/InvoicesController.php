@@ -10,7 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\sections;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
+use App\Notifications\AddInvoices;
+use App\Exports\InvoicesExport;
+use Maatwebsite\Excel\Facades\Excel;
 class InvoicesController extends Controller
 {
     /**
@@ -45,6 +49,7 @@ class InvoicesController extends Controller
      */
     public function store(Request $request)
     {
+
         invoices::create([
             'invoices_number' => $request->invoice_number,
             'invoices_date' => $request->invoice_Date,
@@ -198,7 +203,7 @@ class InvoicesController extends Controller
             foreach ($atttachments as $at) {
                 if (Storage::disk('public_uploads')->exists($at->invoices_number)) {
                     Storage::disk('public_uploads')->deleteDirectory($at->invoices_number);
-                
+
                 }
             }
             $invoices->forceDelete();
@@ -301,9 +306,16 @@ class InvoicesController extends Controller
         return view('invoices.partial_invoices', compact('invoices'));
     }
 
+    public function printInvoices($id)
+    {
+        $invoices = invoices::where('id', '=', $id)->first();
+        return view('invoices.print_invoices', compact('invoices'));
+    }
 
-
-
+    public function exportInvoices()
+    {
+        return Excel::download(new InvoicesExport, 'invoices.csv');
+    }
 
 
 }

@@ -4,8 +4,10 @@ use App\Http\Controllers\ArchivedInvoicesController;
 use App\Http\Controllers\InvoicesAttachmentsController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\InvoicesDetailsController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -42,5 +44,11 @@ Route::get('paid_invoices', [InvoicesController::class, 'paidInvoices']);
 Route::get('unpaid_invoices', [InvoicesController::class, 'unPaidInvoices']);
 Route::get('partial_invoices', [InvoicesController::class, 'parialPaid']);
 Route::resource('archived_invoices', ArchivedInvoicesController::class);
+Route::get('print_invoices/{id}', [InvoicesController::class, 'printInvoices'])->name('print_invoices');
+Route::get('export_invoices', [InvoicesController::class, 'exportInvoices']);
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+});
 Route::get('/{page}', action: [\App\Http\Controllers\AdminController::class, 'index']);
 

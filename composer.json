@@ -7,11 +7,17 @@
     "require": {
         "php": "^8.0",
         "fruitcake/laravel-cors": "^2.0.5",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "3.4"
+        "laravel/ui": "3.4",
+        "laravelcollective/html": "^6.4",
+        "maatwebsite/excel": "^3.1",
+        "psr/simple-cache": "^3.0",
+        "spatie/laravel-permission": "^6.12",
+        "symfony/http-client": "^7.2",
+        "symfony/mailgun-mailer": "^7.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

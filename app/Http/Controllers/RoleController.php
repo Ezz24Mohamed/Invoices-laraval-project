@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\invoices;
 
-
-class ArchivedInvoicesController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +13,7 @@ class ArchivedInvoicesController extends Controller
      */
     public function index()
     {
-        $invoices = invoices::onlyTrashed()->get();
-        return view('invoices.archived_invoices', compact('invoices'));
+        //
     }
 
     /**
@@ -69,12 +66,9 @@ class ArchivedInvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $invoices_id = $request->invoices_id;
-        invoices::withTrashed()->where('id','=',$invoices_id)->restore();
-        session()->flash('restore_invoices');
-        return redirect('invoices');
+        //
     }
 
     /**
@@ -83,12 +77,8 @@ class ArchivedInvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request){
-        $invoices_id=$request->invoices_id;
-        $invoices=invoices::withTrashed()->where('id',$invoices_id)->first();
-        $invoices->forceDelete();
-        session()->flash('delete_archived');
-        return back();
-
+    public function destroy($id)
+    {
+        //
     }
 }
