@@ -15,7 +15,8 @@
         "laravelcollective/html": "^6.4",
         "maatwebsite/excel": "^3.1",
         "psr/simple-cache": "^3.0",
-        "spatie/laravel-permission": "^6.12",
+        "spatie/laravel-html": "^3.5",
+        "spatie/laravel-permission": "^6.13",
         "symfony/http-client": "^7.2",
         "symfony/mailgun-mailer": "^7.1"
     },

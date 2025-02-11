@@ -23,6 +23,11 @@
 @section('content')
 
 
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 <!-- row -->
 <div class="row row-sm">
@@ -32,9 +37,9 @@
                 <div class="d-flex justify-content-between">
                     <div class="col-lg-12 margin-tb">
                         <div class="pull-right">
-                            @can('اضافة صلاحية')
-                                <a class="btn btn-primary btn-sm" href="{{ route('roles.create') }}">اضافة</a>
-                            @endcan
+                           
+                                <a class="btn btn-success" href="{{ route('roles.create') }}">اضافة</a>
+                          
                         </div>
                     </div>
                     <br>
@@ -52,6 +57,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $i = 0; ?>
+                            @foreach ($roles as $role)
+                                <?php $i++; ?>
+                                <tr>
+                                    <td>{{ $i }}</td>
+                                    <td>{{ $role->name }}</td>
+                                    <td>
+
+                                        <a class="btn btn-success btn-sm"
+                                            href="{{ route('roles.show', $role->id) }}">عرض</a>
+
+                                        <a class="btn btn-primary btn-sm"
+                                            href="{{ route('roles.edit', $role->id) }}">تعديل</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

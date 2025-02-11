@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -12,10 +15,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+        $this->middleware('permission:عرض صلاحية', ['only' => ['index']]);
+        $this->middleware('permission:اضافة صلاحية', ['only' => ['create', 'store']]);
+        $this->middleware('permission:تعديل صلاحية', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:حذف صلاحية', ['only' => ['destroy']]);
+
+    }
     public function index()
     {
-        $users=User::all();
-        return view('users.index',compact('users'));
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -25,7 +36,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::pluck('name', 'name')->all();
+        return view('users.add_users', compact('roles'));
     }
 
     /**
@@ -36,7 +48,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            'roles_name' => 'required',
+
+        ]);
+
+        $input = $request->all();
+
+        $input['password'] = Hash::make($input['password']);
+
+        $user = User::create($input);
+        $user->assignRole($request->input('roles_name'));
+
+        return redirect()->route('users.index')->with('success', 'تم اضافة المستخدم بنجاح');
     }
 
     /**
@@ -47,7 +75,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**

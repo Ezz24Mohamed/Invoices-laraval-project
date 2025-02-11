@@ -44,7 +44,7 @@
             <div class="card-header pb-0">
                 <div class="col-sm-1 col-md-2">
 
-                    <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">اضافة مستخدم</a>
+                    <a class="btn btn-success" href="{{ route('users.create') }}">اضافة مستخدم</a>
                 </div>
             </div>
             <div class="card-body">
@@ -68,6 +68,32 @@
                                     <td>{{ $i }}</td>
                                     <td>{{ $u->name }}</td>
                                     <td>{{ $u->email }}</td>
+                                    <td>
+                                        @if ($u->status == 'مفعل')
+                                            <span class="label text-success d-flex">
+                                                <div class="dot-label bg-success ml-1"></div>{{ $u->status }}
+                                            </span>
+                                        @else
+                                            <span class="label text-danger d-flex">
+                                                <div class="dot-label bg-danger ml-1"></div>{{ $u->status }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @foreach ($u->roles_name as $r)
+                                            <label class="badge badge-success"> {{ $r }} </label>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('users.edit', $u->id) }}" class="btn btn-sm btn-info"
+                                            title="تعديل"><i class="las la-pen"></i></a>
+
+                                        <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
+                                            data-user_id="{{ $u->id }}" data-username="{{ $u->name }}"
+                                            data-toggle="modal" href="#modaldemo8" title="حذف"><i
+                                                class="las la-trash"></i></a>
+                                    </td>
+
                                 </tr>
                             @endforeach
 
@@ -80,6 +106,29 @@
     <!--/div-->
 
     <!-- Modal effects -->
+    <div class="modal" id="modaldemo8">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h6 class="modal-title">حذف المستخدم</h6><button aria-label="Close" class="close"
+                        data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <form action="{{ route('users.destroy', 'test') }}" method="post">
+                    @method('delete')
+                    @csrf
+                    <div class="modal-body">
+                        <p>هل انت متاكد من عملية الحذف ؟</p><br>
+                        <input type="hidden" name="user_id" id="user_id" value="">
+                        <input class="form-control" name="username" id="username" type="text" readonly>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                        <button type="submit" class="btn btn-danger">تاكيد</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
 
 </div>
 
