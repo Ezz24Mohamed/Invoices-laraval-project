@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
+use DB;
 
 class UserController extends Controller
 {
@@ -86,7 +87,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        $roles = Role::pluck('name', 'name')->all();
+        $userRole = $user->roles->pluck('name', 'name')->all();
+        return view('users.edit_users', compact('user', 'roles', 'userRole'));
+
     }
 
     /**
@@ -98,7 +103,29 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'name' => 'required',
+                'email' => 'required|unique:users,email,' . $id,
+                'password' => 'required|same:confirm-password',
+                'roles' => 'required',
+            ],
+
+        );
+
+        $user = User::find($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->input('password')),
+            'status' => $request->status,
+            'roles_name' => $request->roles,
+        ]);
+
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+        $user->assignRole($request->input('roles'));
+        return redirect('users')->with('success', 'تم تحديث المستخدم بنجاح');
     }
 
     /**
@@ -107,8 +134,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+
+
+        User::find($request->user_id)->delete();
+        return redirect('users')->with('danger', 'تم حذف المستخدم بنجاح');
+
     }
 }

@@ -40,7 +40,7 @@
             <div class="card-body">
                 <div class="col-lg-12 margin-tb">
                     <div class="pull-right">
-                        <a class="btn btn-primary btn-sm" href="{{ route('users.index') }}">رجوع</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('users.index') }}">رجوع</a>
                     </div>
                 </div><br>
                 <form class="parsley-style-1" id="selectForm2" autocomplete="off" name="selectForm2"
@@ -99,7 +99,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                        <button class="btn btn-main-primary pd-x-20" type="submit">تاكيد</button>
+                        <button class="btn btn-success pd-x-20" type="submit">تاكيد</button>
                     </div>
                 </form>
             </div>
