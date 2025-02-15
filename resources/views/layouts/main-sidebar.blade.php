@@ -18,7 +18,7 @@
             <div class="dropdown user-pro-body">
                 <div class="">
                     <img alt="user-img" class="avatar avatar-xl brround"
-                        src="{{ URL::asset('assets/img/faces/6.jpg') }}"><span
+                        src="{{ URL::asset('assets/img/faces/6.png') }}"><span
                         class="avatar-status profile-status bg-green"></span>
                 </div>
                 <div class="user-info">
@@ -96,7 +96,7 @@
                             </li>
                         @endcan
                         @can('تقرير العملاء')
-                            <li><a class="slide-item" href="{{ url('/' . ($page = 'darggablecards')) }}">تقارير العملاء</a>
+                            <li><a class="slide-item" href="{{ url('/' . ($page = 'clients_reports')) }}">تقارير العملاء</a>
                             </li>
                         @endcan
                     </ul>
