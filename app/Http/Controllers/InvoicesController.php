@@ -12,7 +12,7 @@ use App\Models\sections;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
-use App\Notifications\AddInvoices;
+use App\Notifications\AddInvoice;
 use App\Exports\InvoicesExport;
 use Maatwebsite\Excel\Facades\Excel;
 class InvoicesController extends Controller
@@ -96,6 +96,9 @@ class InvoicesController extends Controller
 
 
         }
+        $user=Auth::user();
+        $invoices=invoices::latest()->first();
+        Notification::send($user,new AddInvoice($invoices));
         session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
         return back();
 

@@ -5,8 +5,8 @@
             <div class="responsive-logo">
                 <a href="{{ url('/' . ($page = 'index')) }}"><img src="{{ URL::asset('assets/img/brand/logo.png') }}"
                         class="logo-1" alt="logo"></a>
-                <a href="{{ url('/' . ($page = 'index')) }}"><img src="{{ URL::asset('assets/img/brand/logo-white.png') }}"
-                        class="dark-logo-1" alt="logo"></a>
+                <a href="{{ url('/' . ($page = 'index')) }}"><img
+                        src="{{ URL::asset('assets/img/brand/logo-white.png') }}" class="dark-logo-1" alt="logo"></a>
                 <a href="{{ url('/' . ($page = 'index')) }}"><img src="{{ URL::asset('assets/img/brand/favicon.png') }}"
                         class="logo-2" alt="logo"></a>
                 <a href="{{ url('/' . ($page = 'index')) }}"><img src="{{ URL::asset('assets/img/brand/favicon.png') }}"
@@ -202,87 +202,36 @@
                     <div class="dropdown-menu">
                         <div class="menu-header-content bg-primary text-right">
                             <div class="d-flex">
-                                <h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">Notifications
+                                <h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">الاشعارات
                                 </h6>
-                                <span class="badge badge-pill badge-warning mr-auto my-auto float-left">Mark All
-                                    Read</span>
+                                <span class="badge badge-pill badge-warning mr-auto my-auto float-left"><a
+                                        href="\MarkAsRead_all">تعين قراءة الكل</a></span>
                             </div>
-                            <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">You have 4 unread
-                                Notifications</p>
+                            <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">عدد الاشعارات الغير
+                                مقروئة : {{ auth()->user()->unreadNotifications->count() }} </p>
                         </div>
+
                         <div class="main-notification-list Notification-scroll">
-                            <a class="d-flex p-3 border-bottom" href="#">
-                                <div class="notifyimg bg-pink">
-                                    <i class="la la-file-alt text-white"></i>
-                                </div>
-                                <div class="mr-3">
-                                    <h5 class="notification-label mb-1">New files available</h5>
-                                    <div class="notification-subtext">10 hour ago</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <i class="las la-angle-left text-left text-muted"></i>
-                                </div>
-                            </a>
-                            <a class="d-flex p-3" href="#">
-                                <div class="notifyimg bg-purple">
-                                    <i class="la la-gem text-white"></i>
-                                </div>
-                                <div class="mr-3">
-                                    <h5 class="notification-label mb-1">Updates Available</h5>
-                                    <div class="notification-subtext">2 days ago</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <i class="las la-angle-left text-left text-muted"></i>
-                                </div>
-                            </a>
-                            <a class="d-flex p-3 border-bottom" href="#">
-                                <div class="notifyimg bg-success">
-                                    <i class="la la-shopping-basket text-white"></i>
-                                </div>
-                                <div class="mr-3">
-                                    <h5 class="notification-label mb-1">New Order Received</h5>
-                                    <div class="notification-subtext">1 hour ago</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <i class="las la-angle-left text-left text-muted"></i>
-                                </div>
-                            </a>
-                            <a class="d-flex p-3 border-bottom" href="#">
-                                <div class="notifyimg bg-warning">
-                                    <i class="la la-envelope-open text-white"></i>
-                                </div>
-                                <div class="mr-3">
-                                    <h5 class="notification-label mb-1">New review received</h5>
-                                    <div class="notification-subtext">1 day ago</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <i class="las la-angle-left text-left text-muted"></i>
-                                </div>
-                            </a>
-                            <a class="d-flex p-3 border-bottom" href="#">
-                                <div class="notifyimg bg-danger">
-                                    <i class="la la-user-check text-white"></i>
-                                </div>
-                                <div class="mr-3">
-                                    <h5 class="notification-label mb-1">22 verified registrations</h5>
-                                    <div class="notification-subtext">2 hour ago</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <i class="las la-angle-left text-left text-muted"></i>
-                                </div>
-                            </a>
-                            <a class="d-flex p-3 border-bottom" href="#">
-                                <div class="notifyimg bg-primary">
-                                    <i class="la la-check-circle text-white"></i>
-                                </div>
-                                <div class="mr-3">
-                                    <h5 class="notification-label mb-1">Project has been approved</h5>
-                                    <div class="notification-subtext">4 hour ago</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <i class="las la-angle-left text-left text-muted"></i>
-                                </div>
-                            </a>
+                            @foreach (auth()->user()->unreadNotifications as $no)
+                                <a class="d-flex p-3 border-bottom"
+                                    href="{{ url('InvoicesDetails') }}/{{ $no->data['id'] }}">
+                                    <div class="notifyimg bg-warning">
+                                        <i class="la la-envelope-open text-white"></i>
+                                    </div>
+                                    <div class="mr-3">
+                                        <h5 class="notification-label mb-1"></h5>
+                                        <div class="notification-subtext">{{ $no->data['title'] }}
+                                            {{ $no->data['user'] }}
+                                            <br>
+                                            {{ $no->created_at }}
+                                        </div>
+                                    </div>
+                                    <div class="mr-auto">
+                                        <i class="las la-angle-left text-left text-muted"></i>
+                                    </div>
+                                </a>
+                            @endforeach
+
                         </div>
                         <div class="dropdown-footer">
                             <a href="">VIEW ALL</a>
@@ -308,7 +257,7 @@
                                 <div class="main-img-user"><img alt=""
                                         src="{{ URL::asset('assets/img/faces/6.jpg') }}" class=""></div>
                                 <div class="mr-3 my-auto">
-                                    <h6>{{Auth::user()->name}}</h6><span>{{Auth::user()->email}}</span>
+                                    <h6>{{ Auth::user()->name }}</h6><span>{{ Auth::user()->email }}</span>
                                 </div>
                             </div>
                         </div>
