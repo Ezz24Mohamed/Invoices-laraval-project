@@ -1,5 +1,5 @@
 # Invoices Management System
-## Overview
+
 "This is a backend-powered invoices management system designed to simplify invoice creation, tracking, and management. Built with scalability and efficiency in mind, this project ensures smooth financial record-keeping."
 
 ## Features
@@ -18,6 +18,9 @@
 
 ## Tech Stack
 Backend: Laravel
+
 Frontend: HTML, CSS, JavaScript, AJAX
+
 Database: MySQL
+
 Packages: Spatie (permissions), Maatwebsite (Excel handling), Chart.js (data visualization)
