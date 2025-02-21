@@ -16,11 +16,16 @@
 
 ✅ Seamless AJAX-powered requests for a dynamic experience
 
-## Tech Stack
-Backend: Laravel
+## 🚀 Tech Stack & Tools  
 
-Frontend: HTML, CSS, JavaScript, AJAX
+| 🌟 Feature            | 🚀 Technology     |
+|----------------------|-----------------|
+| **Backend**         | Laravel ⚡       |
+| **Frontend**        | HTML, CSS, JavaScript 🎨 |
+| **Dynamic Requests** | AJAX 🔄         |
+| **Database**        | MySQL 💾        |
+| **Permissions**     | Spatie 🛡️       |
+| **Excel Export**    | Maatwebsite 📂   |
+| **Charts & Analytics** | Chart.js 📊   |
 
-Database: MySQL
 
-Packages: Spatie (permissions), Maatwebsite (Excel handling), Chart.js (data visualization)
