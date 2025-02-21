@@ -66,6 +66,9 @@ class HomeController extends Controller
             ])
             ->options([]);
 
-        return view('home', compact('chartjs', 'chartjs_2'));
-    }
+       return view('home', compact('chartjs', 'chartjs_2')); 
+
+
+return view('home',);
+}
 }

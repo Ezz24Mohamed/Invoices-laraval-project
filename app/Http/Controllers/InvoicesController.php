@@ -319,14 +319,25 @@ class InvoicesController extends Controller
     {
         return Excel::download(new InvoicesExport, 'invoices.csv');
     }
-    public function markAsRead(Request $request){
-        $unreadNotifications=auth()->user()->unreadNotifications()->get();
-        if($unreadNotifications){
-            $unreadNotifications->markAsRead();
-            return redirect('home');
-        }
-    }
+    public function markAsRead(Request $request)
+    {
+      
+        $unreadNotifications = auth()->user()->unreadNotifications()->get();
 
+        if ($unreadNotifications->isNotEmpty()) {
+            foreach ($unreadNotifications as $notification) {
+                $invoice= invoices::where('id', $notification->data['id'])->exists();
+
+                if (!$invoice) {
+                    $notification->delete(); // Delete notification if invoice is deleted
+                } else {
+                    $notification->markAsRead(); // Mark as read if invoice exists
+                }
+            }
+        }
+
+        return redirect('home');
+    }
 
 
 }

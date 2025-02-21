@@ -1,88 +1,152 @@
 @extends('layouts.master2')
 
-@section('title')
-تسجيل الدخول
-@endsection
-
+@section('title', __('تسجيل الدخول'))
 
 @section('css')
-<!-- Sidemenu-respoansive-tabs css -->
-<link href="{{URL::asset('assets/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css')}}" rel="stylesheet">
+    <!-- Sidemenu-responsive-tabs CSS -->
+    <link href="{{ URL::asset('assets/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}"
+        rel="stylesheet">
+    <style>
+        /* Background Styling */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+
+        /* Card Styling */
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Logo Styling */
+        .logo {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* Heading Styling */
+        .login-header h2 {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .login-header h5 {
+            font-weight: 500;
+            color: #555;
+        }
+
+        /* Form Inputs */
+        .form-group label {
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            height: 45px;
+        }
+
+        /* Button Styling */
+        .btn-main-primary {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            padding: 10px;
+        }
+
+        .btn-main-primary:hover {
+            background: linear-gradient(135deg, #a777e3, #6e8efb);
+            transform: scale(1.05);
+        }
+
+        /* Image Styling */
+        .login-image {
+            max-width: 100%;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .login-card {
+                margin-top: 20px;
+            }
+        }
+    </style>
 @endsection
+
 @section('content')
-		<div class="container-fluid">
-			<div class="row no-gutter">
-				<!-- The image half -->
-				<!-- The content half -->
-				<div class="col-md-6 col-lg-6 col-xl-5 bg-white">
-					<div class="login d-flex align-items-center py-2">
-						<!-- Demo content-->
-						<div class="container p-0">
-							<div class="row">
-								<div class="col-md-10 col-lg-10 col-xl-9 mx-auto">
-									<div class="card-sigin">
-										<div class="mb-5 d-flex"> <a href="{{ url('/' . $page='Home') }}"><img src="{{URL::asset('assets/img/brand/favicon.png')}}" class="sign-favicon ht-40" alt="logo"></a><h1 class="main-logo1 ml-1 mr-0 my-auto tx-28">Invoices<span>Hub</span></h1></div>
-										<div class="card-sigin">
-											<div class="main-signup-header">
-												<h2>مرحبا بك</h2>
-												<h5 class="font-weight-semibold mb-4"> تسجيل الدخول</h5>
-                                                <form method="POST" action="{{ route('login') }}">
-                                                 @csrf
-													<div class="form-group">
-													<label>البريد الالكتروني</label>
-                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                                     @error('email')
-                                                     <span class="invalid-feedback" role="alert">
-                                                     <strong>{{ $message }}</strong>
-                                                     </span>
-                                                     @enderror
-													</div>
+    <div class="login-container">
+        <div class="login-card">
+            <a href="{{ url('/') }}">
+                <img src="{{ URL::asset('assets/img/brand/favicon.png') }}" class="logo" alt="logo">
+            </a>
+            <div class="login-header">
+                <h2>{{ __('مرحبًا بك') }}</h2>
+                <h5>{{ __('تسجيل الدخول') }}</h5>
+            </div>
 
-												 <div class="form-group">
-											 	 <label>كلمة المرور</label> 
-                                                
-                                                  <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
 
-                                                  @error('password')
-                                                  <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                                  </span>
-												  @enderror
-                                                  <div class="form-group row">
-                                                      <div class="col-md-6 offset-md-4">
-                                                           <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                <label class="form-check-label" for="remember">
-                                                                       {{ __('تذكرني') }}
-                                                                </label>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-												  </div>
-                                                    <button type="submit" class="btn btn-main-primary btn-block">
-                                                    {{ __('تسجيل الدخول') }}
-                                                    </button>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div><!-- End -->
-					</div>
-				</div><!-- End -->
+                <!-- Email Input -->
+                <div class="form-group text-right">
+                    <label for="email">{{ __('البريد الإلكتروني') }}</label>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
 
-                <div class="col-md-6 col-lg-6 col-xl-7 d-none d-md-flex bg-primary-transparent">
-					<div class="row wd-100p mx-auto text-center">
-						<div class="col-md-12 col-lg-12 col-xl-12 my-auto mx-auto wd-100p">
-							<img src="{{URL::asset('assets/img/media/login.png')}}" class="my-auto ht-xl-80p wd-md-100p wd-xl-80p mx-auto" alt="logo">
-						</div>
-					</div>
-				</div>
+                <!-- Password Input -->
+                <div class="form-group text-right">
+                    <label for="password">{{ __('كلمة المرور') }}</label>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                        name="password" required autocomplete="current-password">
+                    @error('password')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
 
-			</div>
-		</div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn btn-main-primary btn-block">
+                    {{ __('تسجيل الدخول') }}
+                </button>
+            </form>
+        </div>
+    </div>
 @endsection
+
 @section('js')
 @endsection

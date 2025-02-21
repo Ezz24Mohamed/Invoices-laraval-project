@@ -60,10 +60,10 @@
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
 
-                    <a href="invoices/create" class="modal-effect btn btn-success" style="color:white"><i
+                    <a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
                             class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
 
-                    <a class="modal-effect btn btn-success " href="{{ url('export_invoices') }}" style="color:white"><i
+                    <a class="modal-effect btn btn-sm btn-primary " href="{{ url('export_invoices') }}" style="color:white"><i
                             class="fas fa-file-download"></i>&nbsp;تحميل اكسيل</a>
 
                 </div>
