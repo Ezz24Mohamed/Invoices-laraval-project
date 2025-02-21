@@ -16,7 +16,7 @@ class InvoicesDetailsController extends Controller
      */
     public function index()
     {
-
+        
     }
 
     /**
@@ -62,7 +62,6 @@ class InvoicesDetailsController extends Controller
         $invoices = invoices::where('id', '=', $id)->first();
         $details = invoices_details::where('id_invoices', '=', $id)->get();
         $attachments = invoices_attachments::where('id_invoices', '=', $id)->get();
-
         return view('invoices.invoices_details', compact('invoices', 'details', 'attachments'));
 
 

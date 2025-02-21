@@ -96,7 +96,7 @@ class InvoicesController extends Controller
 
 
         }
-        $user=Auth::user();
+        $user=user::get();
         $invoices=invoices::latest()->first();
         Notification::send($user,new AddInvoice($invoices));
         session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
@@ -319,6 +319,14 @@ class InvoicesController extends Controller
     {
         return Excel::download(new InvoicesExport, 'invoices.csv');
     }
+    public function markAsRead(Request $request){
+        $unreadNotifications=auth()->user()->unreadNotifications()->get();
+        if($unreadNotifications){
+            $unreadNotifications->markAsRead();
+            return redirect('home');
+        }
+    }
+
 
 
 }
