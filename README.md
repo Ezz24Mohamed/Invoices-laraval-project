@@ -5,10 +5,15 @@
 ## Features
 
 ✅ Create, update, and delete invoices
+
 ✅ View invoice details with status tracking
+
 ✅ Generate reports with Maatwebsite Excel integration
+
 ✅ Role-based access control using Spatie
+
 ✅ Interactive charts and analytics with Chart.js
+
 ✅ Seamless AJAX-powered requests for a dynamic experience
 
 ## Tech Stack
