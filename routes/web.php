@@ -56,6 +56,6 @@ Route::get('invoices_reports', [InvoicesReports::class, 'index']);
 Route::post('search_invoices', [InvoicesReports::class, 'search']);
 Route::get('clients_reports', [ClientsReports::class, 'index']);
 Route::post('search_reports', [ClientsReports::class, 'search']);
-Route::get('mark_as_read', [InvoicesController::class, 'markAsRead']);
+Route::get('mark_as_read', [InvoicesController::class, 'markAsReadAll']);
 Route::get('/{page}', action: [\App\Http\Controllers\AdminController::class, 'index']);
 

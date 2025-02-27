@@ -96,9 +96,9 @@ class InvoicesController extends Controller
 
 
         }
-        $user=user::get();
-        $invoices=invoices::latest()->first();
-        Notification::send($user,new AddInvoice($invoices));
+        $user = user::get();
+        $invoices = invoices::latest()->first();
+        Notification::send($user, new AddInvoice($invoices));
         session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
         return back();
 
@@ -319,14 +319,14 @@ class InvoicesController extends Controller
     {
         return Excel::download(new InvoicesExport, 'invoices.csv');
     }
-    public function markAsRead(Request $request)
+    public function markAsReadAll(Request $request)
     {
-      
+
         $unreadNotifications = auth()->user()->unreadNotifications()->get();
 
         if ($unreadNotifications->isNotEmpty()) {
             foreach ($unreadNotifications as $notification) {
-                $invoice= invoices::where('id', $notification->data['id'])->exists();
+                $invoice = invoices::where('id', $notification->data['id'])->exists();
 
                 if (!$invoice) {
                     $notification->delete(); // Delete notification if invoice is deleted
@@ -334,9 +334,10 @@ class InvoicesController extends Controller
                     $notification->markAsRead(); // Mark as read if invoice exists
                 }
             }
+            return redirect('home');
         }
 
-        return redirect('home');
+
     }
 
 

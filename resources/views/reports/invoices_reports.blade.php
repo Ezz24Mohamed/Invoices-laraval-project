@@ -156,7 +156,7 @@
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ $invoice->invoices_number }} </td>
-                                        <td>{{ $invoice->invoices_Date }}</td>
+                                        <td>{{ $invoice->invoices_date }}</td>
                                         <td>{{ $invoice->due_date }}</td>
                                         <td>{{ $invoice->product }}</td>
                                         <td><a
